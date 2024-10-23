@@ -6,6 +6,9 @@ from qpth.util import get_sizes, bdiag
 
 
 def lu_hack(x):
+    # Add a small regularization term to the diagonal
+    reg_term = 1e-8  # Adjust this value as needed
+    x = x + reg_term * torch.eye(x.size(-1), device=x.device)
     data, pivots = torch.linalg.lu_factor(x, pivot=not x.is_cuda)
 
     if x.is_cuda:
